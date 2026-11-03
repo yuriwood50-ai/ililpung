@@ -1,0 +1,36 @@
+/* 일일펑 버튼·카드 효과 — diary-final.css 위에 덧입혀요 */
+.mission-card .boom-button{
+  position:relative;overflow:hidden;isolation:isolate;color:#fff;border-color:var(--ink,#1b1a23);
+  background:linear-gradient(135deg,#ff593d 0%,#ff8a3d 55%,#ffd456 100%);background-size:200% 200%;
+  box-shadow:0 4px 0 var(--ink,#1b1a23),0 0 14px rgba(255,89,61,.55);
+  animation:fxPulse 2.2s ease-in-out infinite,fxGradient 4s linear infinite;
+  transition:transform .12s cubic-bezier(.3,1.6,.5,1),box-shadow .12s;
+  text-shadow:0 1px 0 rgba(0,0,0,.35);
+}
+/* 지나가는 빛줄기 */
+.mission-card .boom-button::after{
+  content:"";position:absolute;top:-30%;bottom:-30%;width:38%;left:-60%;z-index:-1;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);
+  animation:fxShine 2.8s ease-in-out infinite;
+}
+.mission-card .boom-button:hover{transform:translateY(-2px) scale(1.06) rotate(-1.5deg);box-shadow:0 6px 0 var(--ink,#1b1a23),0 0 26px rgba(255,150,60,.9)}
+.mission-card .boom-button:active{transform:translateY(3px) scale(.94);box-shadow:0 1px 0 var(--ink,#1b1a23),0 0 8px rgba(255,89,61,.7);animation-play-state:paused}
+.mission-card .boom-button:focus-visible{outline:3px solid #4de2ff;outline-offset:3px}
+.mission-card .boom-button:disabled{animation:none}
+.mission-card .boom-button:disabled::after{display:none}
+
+/* 터지기 직전 카드가 부르르 떨리며 밝아져요 */
+.mission-card.is-blasting{animation:fxCharge .26s linear both;filter:brightness(1.25) saturate(1.3)}
+
+/* 펑! 글자 */
+.fx-word{text-shadow:0 0 18px #ffd456,0 0 40px #ff593d,3px 3px 0 #1b1a23}
+
+@keyframes fxPulse{50%{box-shadow:0 4px 0 var(--ink,#1b1a23),0 0 26px rgba(255,120,60,.95)}}
+@keyframes fxGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes fxShine{0%,55%{left:-60%}100%{left:130%}}
+@keyframes fxCharge{0%{transform:translate(0,0)}15%{transform:translate(-4px,2px) scale(1.02)}30%{transform:translate(4px,-2px) scale(1.04)}45%{transform:translate(-5px,-1px) scale(1.05)}60%{transform:translate(5px,2px) scale(1.06)}100%{transform:translate(0,0) scale(1.08)}}
+
+@media (prefers-reduced-motion:reduce){
+  .mission-card .boom-button,.mission-card .boom-button::after,.mission-card.is-blasting{animation:none}
+  .mission-card .boom-button{transition:none}
+}

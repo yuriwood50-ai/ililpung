@@ -11,7 +11,7 @@
 <link href="./assets/icon-192.png" rel="apple-touch-icon"/>
 <link href="./styles.css" rel="stylesheet"/>
 <title>일일펑💥 | 오늘 할 일, 하나씩 펑!</title>
-<link href="./diary-final.css" rel="stylesheet"/></head>
+<link href="./diary-final.css" rel="stylesheet"/><link href="./fx.css" rel="stylesheet"/></head>
 <body><div class="app-shell" id="app">
 <header class="topbar">
 <a aria-label="일일펑 홈" class="brand" href="#today"><span class="brand-mark"><svg fill="none" height="32" viewbox="0 0 40 40" width="32"><path d="M7 28c5 3 20 3 25-5M8 12l6 8 7-14 1 14 10-7-6 11" stroke="#4d4b45" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1"></path><path d="M8 34l4-2m14-26 1 3" stroke="#d17c63" stroke-linecap="round" stroke-width="2"></path></svg></span><span>일일펑<span class="brand-period">.</span></span></a>
@@ -57,6 +57,7 @@
 <dialog aria-labelledby="dialogTitle" class="task-dialog" id="taskDialog"><form id="taskForm" method="dialog"><div class="dialog-top"><div><div class="eyebrow small">NEW MISSION</div><h2 id="dialogTitle">새 카드 만들기</h2></div><button aria-label="닫기" class="icon-button" id="dialogClose" type="button">✕</button></div><label class="form-field">할 일 이름 <input autocomplete="off" id="taskTitle" maxlength="45" placeholder="예: 블로그 작업하기" required="" type="text"/></label><label class="form-field">기준 시간 <span class="label-note">선택 사항 · 표시용</span><input id="taskTime" type="time"/></label><fieldset class="weekday-field"><legend>반복 요일</legend><div class="weekday-chips" id="weekdayChips"><label><input checked="" type="checkbox" value="1"/><span>월</span></label><label><input checked="" type="checkbox" value="2"/><span>화</span></label><label><input checked="" type="checkbox" value="3"/><span>수</span></label><label><input checked="" type="checkbox" value="4"/><span>목</span></label><label><input checked="" type="checkbox" value="5"/><span>금</span></label><label><input checked="" type="checkbox" value="6"/><span>토</span></label><label><input checked="" type="checkbox" value="0"/><span>일</span></label></div></fieldset><p class="form-info">변경한 반복 요일은 오늘부터 적용되고, 지난 기록은 보존돼요.</p><div class="dialog-actions"><button class="outline-button" id="dialogCancel" type="button">취소</button><button class="primary-button" type="submit">카드 저장</button></div></form></dialog>
 <div aria-hidden="true" class="fx-layer" id="fxLayer"></div>
 <div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<script defer="" src="./fx.js"></script>
 <script defer="" src="./app.js"></script>
 </body>
 </html>
