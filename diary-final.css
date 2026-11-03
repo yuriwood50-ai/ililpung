@@ -86,3 +86,16 @@ body,button,input,select,textarea,dialog{font-family:var(--typeface)}
 .finished-box h3{font-size:20px;color:#59554d}
 @media(max-width:760px){.card-actions{gap:5px}.miss-button{min-width:40px;min-height:44px;padding:0 5px;font-size:11px}.mission-card{gap:8px;padding-right:9px;padding-left:9px}.card-index{width:28px;height:28px}.card-copy strong{font-size:14px}}
 @media(max-width:385px){.card-actions{gap:4px}.miss-button{min-width:38px;padding:0 4px;font-size:11px}.boom-button{min-width:49px;width:49px;height:49px}.mission-card{gap:6px}}
+
+/* 오늘 정리한 카드: 오늘 기록만 고칠 수 있어요 */
+.settled-list{margin-top:18px;padding-top:14px;border-top:1px dashed #b6b0a4}
+.settled-list h3{margin:0 0 8px;font:700 13px/1.2 var(--typeface);color:#59554d}
+.settled-list h3 span{color:#8b847b;font-weight:600}
+.settled-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 0;border-bottom:1px dotted #d3cdc1}
+.settled-row strong{flex:1 1 110px;min-width:0;font:600 13px/1.3 var(--typeface);color:#48453f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.settled-chip{flex-shrink:0;padding:3px 7px;border:1px solid currentColor;border-radius:3px;font:700 11px/1 var(--typeface)}
+.settled-chip.is-done{color:#c4492f}.settled-chip.is-miss{color:#77736c;border-style:dashed}
+.settled-actions{display:flex;gap:5px;flex-shrink:0;margin-left:auto}
+.settled-actions button{min-height:36px;padding:0 8px;background:#f8f6ef;border:1px dashed #aaa399;border-radius:4px;color:#59554d;font:600 11px/1.2 var(--typeface);white-space:nowrap;touch-action:manipulation}
+.settled-actions button:hover{background:#ede9df}
+.settled-note{margin:8px 0 0;font:500 11px/1.4 var(--typeface);color:#8b847b}
