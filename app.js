@@ -89,28 +89,19 @@
     if(remaining.length===0){list.innerHTML=(misses?`<div class="complete-box finished-box"><div class="big-complete">✎</div><h3>오늘의 카드 정리 완료</h3><p>펑! ${done}개 · 불발 ${misses}개<br>불발은 오늘 날짜의 그래프에 기록됐어요.</p></div>`:'<div class="complete-box"><div class="big-complete">🏆💥</div><h3>ALL CLEAR!</h3><p>오늘의 할 일을 모두 터뜨렸어요.<br>내일도 새로운 카드가 기다려요.</p></div>')+settledHTML;return;}
     list.innerHTML=remaining.map((t,i)=>`<article class="mission-card" data-task-id="${escapeHTML(t.id)}"><span class="card-index">${String(i+1).padStart(2,'0')}</span><div class="card-copy"><strong>${escapeHTML(t.title)}</strong><span>${t.time?'◷ '+escapeHTML(t.time)+' 기준 · ':''}${escapeHTML(formatWeekdays(t))}</span></div><div class="card-actions"><button class="boom-button" type="button" data-action="boom" data-id="${escapeHTML(t.id)}" aria-label="${escapeHTML(t.title)} 완료하고 폭파하기">펑! 💥</button><button class="miss-button" type="button" data-action="miss" data-id="${escapeHTML(t.id)}" aria-label="${escapeHTML(t.title)} 오늘 불발로 기록하기">불발</button></div></article>`).join('')+settledHTML;
   }
-  // 오늘 정리한 카드만 고칠 수 있어요. 지난 날짜는 목록에 나오지 않아 기록이 잠겨 있어요.
+  // 오늘 정리한 카드는 버튼 하나로 전부 되돌려요. 지난 날짜 기록은 건드리지 않아요.
   function renderSettled(tasks,day) {
-    const rows=tasks.filter(t=>completed(t,day)||failed(t,day));
-    if(!rows.length)return '';
-    return `<section class="settled-list" aria-label="오늘 정리한 카드"><h3>오늘 정리한 카드 <span>${rows.length}</span></h3>${rows.map(t=>{const ok=completed(t,day);return `<div class="settled-row"><span class="settled-chip ${ok?'is-done':'is-miss'}">${ok?'펑 성공':'불발'}</span><strong>${escapeHTML(t.title)}</strong><div class="settled-actions"><button type="button" data-action="reopen" data-id="${escapeHTML(t.id)}" aria-label="${escapeHTML(t.title)} 오늘 할 일로 되돌리기">되돌리기</button><button type="button" data-action="flip" data-id="${escapeHTML(t.id)}" aria-label="${escapeHTML(t.title)} ${ok?'불발로':'성공으로'} 바꾸기">${ok?'불발로':'성공으로'}</button></div></div>`;}).join('')}<p class="settled-note">지난 날짜의 기록은 바꿀 수 없어요.</p></section>`;
+    const n=tasks.filter(t=>completed(t,day)||failed(t,day)).length;
+    if(!n)return '';
+    return `<section class="settled-list" aria-label="오늘 정리한 카드"><p>오늘 정리한 카드 <b>${n}</b>개</p><button type="button" class="reset-button" data-action="reset-today">카드 되돌리기</button></section>`;
   }
-  function editSettled(id,mode) {
-    const task=state.tasks.find(t=>t.id===id),day=today();
-    if(!task||task.archived||!scheduled(task,day)||activeBlastIds.has(id))return;
-    const ok=completed(task,day),bad=failed(task,day);
-    if(!ok&&!bad)return;
-    if(mode==='reopen'){
-      if(!confirm(`'${task.title}' 카드를 오늘 할 일로 되돌릴까요?`))return;
-      if(state.completions[id])delete state.completions[id][day];
-      if(state.failures[id])delete state.failures[id][day];
-      save();renderToday();showToast('오늘 할 일로 되돌렸어요.');return;
-    }
-    if(!confirm(`'${task.title}' 카드를 ${ok?'불발':'폭파 성공'}(으)로 바꿀까요?`))return;
-    const stamp=new Date().toISOString();
-    if(ok){if(state.completions[id])delete state.completions[id][day];state.failures[id]??={};state.failures[id][day]=stamp;}
-    else{if(state.failures[id])delete state.failures[id][day];state.completions[id]??={};state.completions[id][day]=stamp;}
-    save();renderToday();showToast(ok?'불발로 바꿨어요.':'폭파 성공으로 바꿨어요.');
+  function resetToday() {
+    const day=today(),targets=state.tasks.filter(t=>!t.archived&&scheduled(t,day)&&(completed(t,day)||failed(t,day)));
+    if(!targets.length||targets.some(t=>activeBlastIds.has(t.id)))return;
+    if(!confirm(`오늘 정리한 카드 ${targets.length}개를 모두 되돌릴까요?
+성공·불발 기록이 오늘 할 일로 돌아가요. 지난 날짜는 바뀌지 않아요.`))return;
+    for(const t of targets){if(state.completions[t.id])delete state.completions[t.id][day];if(state.failures[t.id])delete state.failures[t.id][day];}
+    save();renderToday();showToast('오늘 카드를 모두 되돌렸어요.');
   }
   function showToast(msg, action=null) {clearTimeout(toastTimer);const box=$('toast');box.replaceChildren();const span=document.createElement('span');span.textContent=msg;box.appendChild(span);if(action){const btn=document.createElement('button');btn.type='button';btn.textContent=action.label;btn.addEventListener('click',()=>{box.hidden=true;clearTimeout(toastTimer);action.fn();},{once:true});box.appendChild(btn);}box.hidden=false;toastTimer=setTimeout(()=>box.hidden=true,action?5500:3000);}
   function playExplosion() {
@@ -249,7 +240,7 @@
     document.querySelectorAll('.nav-tab').forEach(el=>el.addEventListener('click',()=>navigate(el.dataset.page)));
     $('soundToggle').addEventListener('click',()=>{soundEnabled=!soundEnabled;localStorage.setItem(SOUND_KEY,soundEnabled?'on':'off');$('soundToggle').textContent=soundEnabled?'♪ ON':'♪ OFF';$('soundToggle').classList.toggle('is-muted',!soundEnabled);});
     $('quickAdd').addEventListener('click',()=>openDialog());$('settingsAdd').addEventListener('click',()=>openDialog());$('gotoRecords').addEventListener('click',()=>navigate('records'));
-    $('missionList').addEventListener('click',(event)=>{const btn=event.target.closest('button[data-action]');if(!btn)return;if(btn.dataset.action==='create')openDialog();else if(btn.dataset.action==='boom')boom(btn.dataset.id,btn);else if(btn.dataset.action==='miss')miss(btn.dataset.id);else if(btn.dataset.action==='reopen'||btn.dataset.action==='flip')editSettled(btn.dataset.id,btn.dataset.action);});
+    $('missionList').addEventListener('click',(event)=>{const btn=event.target.closest('button[data-action]');if(!btn)return;if(btn.dataset.action==='create')openDialog();else if(btn.dataset.action==='boom')boom(btn.dataset.id,btn);else if(btn.dataset.action==='miss')miss(btn.dataset.id);else if(btn.dataset.action==='reset-today')resetToday();});
     $('settingList').addEventListener('click',settingClick);$('archiveSection').addEventListener('click',settingClick);
     function settingClick(event){const b=event.target.closest('button[data-action]');if(!b)return;const id=b.dataset.id;switch(b.dataset.action){case 'edit':openDialog(id);break;case 'archive':archiveTask(id);break;case 'restore':restoreTask(id);break;case 'remove':removeTask(id);break;}}
     $('taskForm').addEventListener('submit',submitDialog);$('dialogClose').addEventListener('click',closeDialog);$('dialogCancel').addEventListener('click',closeDialog);$('taskDialog').addEventListener('click',(e)=>{if(e.target===$('taskDialog'))closeDialog();});

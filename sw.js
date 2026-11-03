@@ -1,4 +1,4 @@
-const CACHE = 'ililpung-static-v6-edit-today';
+const CACHE = 'ililpung-static-v7-reset-today';
 const ASSETS = ['./','./index.html','./styles.css','./diary-final.css','./fx.css','./fx.js','./app.js','./manifest.webmanifest','./assets/icon-192.png','./assets/icon-512.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));});
