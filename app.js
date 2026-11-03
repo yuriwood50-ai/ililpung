@@ -18,7 +18,7 @@
   function createStarterData() {
     const start=today();
     const rows=[['영양제 먹기','08:30'],['오전 10시까지 간헐적 단식하기','10:00'],['블로그 작업하기','14:00'],['AI 공부하기','19:00']];
-    return {version:1,tasks:rows.map(([title,time])=>({id:uid(),title,time,createdDate:start,archived:false,periods:[{from:start,to:null}],schedules:[{from:start,days:[...allDays]}]})),completions:{}};
+    return {version:1,tasks:rows.map(([title,time])=>({id:uid(),title,time,createdDate:start,archived:false,periods:[{from:start,to:null}],schedules:[{from:start,days:[...allDays]}]})),completions:{},failures:{}};
   }
   function validateImport(input) {
     if (!input || !Array.isArray(input.tasks) || !input.completions || typeof input.completions!=='object' || Array.isArray(input.completions)) throw Error('올바른 일일펑 백업 파일이 아니에요.');
@@ -39,7 +39,19 @@
       completions[id]={};
       for(const [day,stamp] of Object.entries(dates)) if(validDate(day)&&day<=today()&&typeof stamp==='string'&&stamp.length<80)completions[id][day]=stamp;
     }
-    return {version:1,tasks,completions};
+    // 기존 v1 백업에는 failures가 없을 수 있어요. 없으면 빈 기록으로 복원합니다.
+    const failures={};
+    if(input.failures!==undefined){
+      if(!input.failures||typeof input.failures!=='object'||Array.isArray(input.failures))throw Error('불발 기록 정보가 올바르지 않아요.');
+      for(const [id,dates] of Object.entries(input.failures)){
+        if(!ids.has(id)||!dates||typeof dates!=='object'||Array.isArray(dates))continue;
+        failures[id]={};
+        for(const [day,stamp] of Object.entries(dates)){
+          if(validDate(day)&&day<=today()&&typeof stamp==='string'&&stamp.length<80&&!completions[id]?.[day])failures[id][day]=stamp;
+        }
+      }
+    }
+    return {version:1,tasks,completions,failures};
   }
   function loadData() {
     try {const raw=localStorage.getItem(STORAGE_KEY); return raw ? validateImport(JSON.parse(raw)) : createStarterData();}
@@ -52,6 +64,7 @@
   let chartRows=[];
   function save() {try {localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return true;} catch(err){console.error(err);showToast('저장 공간 오류: 백업 후 공간을 확인해 주세요.');return false;}}
   function completed(t,day) {return Boolean(state.completions[t.id]?.[day]);}
+  function failed(t,day) {return Boolean(state.failures[t.id]?.[day]);}
   function activeOn(t,day) {return t.periods.some(p=>p.from<=day&&(p.to===null||p.to>=day));}
   function scheduleOn(t,day) {const version=t.schedules.filter(s=>s.from<=day).sort((a,b)=>b.from.localeCompare(a.from))[0]; return version ? version.days.includes(parseDay(day).getDay()) : false;}
   function scheduled(t,day) {return t.createdDate<=day&&activeOn(t,day)&&scheduleOn(t,day);}
@@ -63,16 +76,17 @@
     $('todayDate').textContent=formatDate(day);
     const tasks=state.tasks.filter(t=>!t.archived&&scheduled(t,day));
     const done=tasks.filter(t=>completed(t,day)).length;
-    const remaining=tasks.filter(t=>!completed(t,day));
+    const misses=tasks.filter(t=>failed(t,day)).length;
+    const remaining=tasks.filter(t=>!completed(t,day)&&!failed(t,day));
     $('doneCount').textContent=done;$('totalCount').textContent=tasks.length;
     $('remainingBadge').textContent=remaining.length;
     const pct=tasks.length?Math.round(done/tasks.length*100):0;
     $('progressFill').style.width=pct+'%';$('progressPct').textContent=pct+'%';
-    $('progressHint').textContent=tasks.length===0?'설정에서 오늘의 미션을 만들어 보세요.':done===tasks.length?'오늘의 모든 미션 클리어!':done===0?'첫 카드를 터뜨려 볼까요?':`${done}개 완료! 남은 미션도 펑!`;
+    $('progressHint').textContent=tasks.length===0?'설정에서 오늘의 미션을 만들어 보세요.':remaining.length===0?(misses?`오늘의 기록 완료 · 성공 ${done} / 불발 ${misses}`:'오늘의 모든 미션 클리어!'):misses?`완료 ${done} · 불발 ${misses} · 남은 카드 ${remaining.length}`:done===0?'첫 카드를 터뜨려 볼까요?':`${done}개 완료! 남은 미션도 펑!`;
     const list=$('missionList');
     if(tasks.length===0){list.innerHTML='<div class="empty-missions"><div class="empty-icon">🗓️</div><h3>오늘은 아직 빈 화면!</h3><p>새로운 할 일을 등록하면 오늘부터 미션 카드가 생겨요.</p><button class="primary-button" type="button" data-action="create">＋ 카드 만들기</button></div>';return;}
-    if(remaining.length===0){list.innerHTML='<div class="complete-box"><div class="big-complete">🏆💥</div><h3>ALL CLEAR!</h3><p>오늘의 할 일을 모두 터뜨렸어요.<br>내일도 새로운 카드가 기다려요.</p></div>';return;}
-    list.innerHTML=remaining.map((t,i)=>`<article class="mission-card" data-task-id="${escapeHTML(t.id)}"><span class="card-index">${String(i+1).padStart(2,'0')}</span><div class="card-copy"><strong>${escapeHTML(t.title)}</strong><span>${t.time?'◷ '+escapeHTML(t.time)+' 기준 · ':''}${escapeHTML(formatWeekdays(t))}</span></div><button class="boom-button" type="button" data-action="boom" data-id="${escapeHTML(t.id)}" aria-label="${escapeHTML(t.title)} 완료하고 폭파하기">펑! 💥</button></article>`).join('');
+    if(remaining.length===0){list.innerHTML=misses?`<div class="complete-box finished-box"><div class="big-complete">✎</div><h3>오늘의 카드 정리 완료</h3><p>펑! ${done}개 · 불발 ${misses}개<br>불발은 오늘 날짜의 그래프에 기록됐어요.</p></div>`:'<div class="complete-box"><div class="big-complete">🏆💥</div><h3>ALL CLEAR!</h3><p>오늘의 할 일을 모두 터뜨렸어요.<br>내일도 새로운 카드가 기다려요.</p></div>';return;}
+    list.innerHTML=remaining.map((t,i)=>`<article class="mission-card" data-task-id="${escapeHTML(t.id)}"><span class="card-index">${String(i+1).padStart(2,'0')}</span><div class="card-copy"><strong>${escapeHTML(t.title)}</strong><span>${t.time?'◷ '+escapeHTML(t.time)+' 기준 · ':''}${escapeHTML(formatWeekdays(t))}</span></div><div class="card-actions"><button class="boom-button" type="button" data-action="boom" data-id="${escapeHTML(t.id)}" aria-label="${escapeHTML(t.title)} 완료하고 폭파하기">펑! 💥</button><button class="miss-button" type="button" data-action="miss" data-id="${escapeHTML(t.id)}" aria-label="${escapeHTML(t.title)} 오늘 불발로 기록하기">불발</button></div></article>`).join('');
   }
   function showToast(msg, action=null) {clearTimeout(toastTimer);const box=$('toast');box.replaceChildren();const span=document.createElement('span');span.textContent=msg;box.appendChild(span);if(action){const btn=document.createElement('button');btn.type='button';btn.textContent=action.label;btn.addEventListener('click',()=>{box.hidden=true;clearTimeout(toastTimer);action.fn();},{once:true});box.appendChild(btn);}box.hidden=false;toastTimer=setTimeout(()=>box.hidden=true,action?5500:3000);}
   function playExplosion() {
@@ -98,11 +112,21 @@
   }
   function boom(id,btn) {
     const task=state.tasks.find(t=>t.id===id),day=today();
-    if(!task||task.archived||!scheduled(task,day)||completed(task,day)||activeBlastIds.has(id))return;
+    if(!task||task.archived||!scheduled(task,day)||completed(task,day)||failed(task,day)||activeBlastIds.has(id))return;
     activeBlastIds.add(id);btn.disabled=true;const card=btn.closest('.mission-card');
     if(card)explodeCard(card);
     const now=Date.now();combo=now-lastPopTime<8500?combo+1:1;lastPopTime=now;
     setTimeout(()=>{state.completions[id]??={};state.completions[id][day]=new Date().toISOString();save();activeBlastIds.delete(id);renderToday();showToast(combo>1?`💥 ${combo} COMBO! 연속 폭파 성공!`:'💥 폭파 성공! 멋져요.',{label:'되돌리기',fn:()=>{if(state.completions[id])delete state.completions[id][day];save();renderToday();}});},matchMedia('(prefers-reduced-motion: reduce)').matches?30:430);
+  }
+  function miss(id) {
+    const task=state.tasks.find(t=>t.id===id),day=today();
+    if(!task||task.archived||!scheduled(task,day)||completed(task,day)||failed(task,day)||activeBlastIds.has(id))return;
+    const stamp=new Date().toISOString();
+    state.failures[id]??={};state.failures[id][day]=stamp;
+    save();renderToday();
+    showToast('불발! 오늘의 실패 기록으로 보냈어요.',{label:'되돌리기',fn:()=>{
+      if(state.failures[id]?.[day]===stamp){delete state.failures[id][day];save();if(currentPage==='records')renderRecords();else renderToday();}
+    }});
   }
   function openDialog(id=null) {
     editingId=id;const t=state.tasks.find(t=>t.id===id);$('dialogTitle').textContent=t?'카드 수정하기':'새 카드 만들기';$('taskTitle').value=t?.title||'';$('taskTime').value=t?.time||'';const days=t?.schedules[t.schedules.length-1]?.days||allDays;document.querySelectorAll('#weekdayChips input').forEach(c=>c.checked=days.includes(Number(c.value)));$('taskDialog').showModal();$('taskTitle').focus();
@@ -118,7 +142,7 @@
   }
   function archiveTask(id) {
     const t=state.tasks.find(x=>x.id===id);if(!t||t.archived)return;
-    t.archived=true;const current=t.periods.findLast(p=>p.to===null);if(current){const close=completed(t,today())?today():shiftDay(today(),-1);if(current.from<=close)current.to=close;else t.periods=t.periods.filter(p=>p!==current);}
+    t.archived=true;const current=t.periods.findLast(p=>p.to===null);if(current){const close=(completed(t,today())||failed(t,today()))?today():shiftDay(today(),-1);if(current.from<=close)current.to=close;else t.periods=t.periods.filter(p=>p!==current);}
     save();renderSettings();showToast('카드를 보관했어요. 지난 기록은 남아요.');
   }
   function restoreTask(id) {const t=state.tasks.find(x=>x.id===id);if(!t||!t.archived)return;t.archived=false;t.periods.push({from:today(),to:null});save();renderSettings();showToast('다시 활성화했어요.');}
@@ -140,7 +164,7 @@
     const maxDays=3660;const start=diffDays(range.to,range.from)>maxDays?shiftDay(range.to,-maxDays):range.from;
     for(let day=start;day<=range.to;day=shiftDay(day,1)){
       let done=0,miss=0,pending=0;
-      for(const t of selected){if(!scheduled(t,day))continue;if(completed(t,day))done++;else if(day<today())miss++;else pending++;}
+      for(const t of selected){if(!scheduled(t,day))continue;if(completed(t,day))done++;else if(failed(t,day)||day<today())miss++;else pending++;}
       res.push({day,done,miss,pending});
     }
     return res;
@@ -201,7 +225,7 @@
     document.querySelectorAll('.nav-tab').forEach(el=>el.addEventListener('click',()=>navigate(el.dataset.page)));
     $('soundToggle').addEventListener('click',()=>{soundEnabled=!soundEnabled;localStorage.setItem(SOUND_KEY,soundEnabled?'on':'off');$('soundToggle').textContent=soundEnabled?'♪ ON':'♪ OFF';$('soundToggle').classList.toggle('is-muted',!soundEnabled);});
     $('quickAdd').addEventListener('click',()=>openDialog());$('settingsAdd').addEventListener('click',()=>openDialog());$('gotoRecords').addEventListener('click',()=>navigate('records'));
-    $('missionList').addEventListener('click',(event)=>{const btn=event.target.closest('button[data-action]');if(!btn)return;if(btn.dataset.action==='create')openDialog();else if(btn.dataset.action==='boom')boom(btn.dataset.id,btn);});
+    $('missionList').addEventListener('click',(event)=>{const btn=event.target.closest('button[data-action]');if(!btn)return;if(btn.dataset.action==='create')openDialog();else if(btn.dataset.action==='boom')boom(btn.dataset.id,btn);else if(btn.dataset.action==='miss')miss(btn.dataset.id);});
     $('settingList').addEventListener('click',settingClick);$('archiveSection').addEventListener('click',settingClick);
     function settingClick(event){const b=event.target.closest('button[data-action]');if(!b)return;const id=b.dataset.id;switch(b.dataset.action){case 'edit':openDialog(id);break;case 'archive':archiveTask(id);break;case 'restore':restoreTask(id);break;case 'remove':removeTask(id);break;}}
     $('taskForm').addEventListener('submit',submitDialog);$('dialogClose').addEventListener('click',closeDialog);$('dialogCancel').addEventListener('click',closeDialog);$('taskDialog').addEventListener('click',(e)=>{if(e.target===$('taskDialog'))closeDialog();});
