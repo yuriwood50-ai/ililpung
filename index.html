@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta content="#faf8f1" name="theme-color"/>
+<meta content="일일펑💥 — 매일의 할 일을 통쾌하게 폭파하고, 달라지는 나를 기록해요." name="description"/>
+<link href="./manifest.webmanifest" rel="manifest"/>
+<link href="./assets/icon-192.png" rel="icon" type="image/png"/>
+<link href="./assets/icon-192.png" rel="apple-touch-icon"/>
+<link href="./styles.css" rel="stylesheet"/>
+<title>일일펑💥 | 오늘 할 일, 하나씩 펑!</title>
+<link href="./diary-final.css" rel="stylesheet"/></head>
+<body><div class="app-shell" id="app">
+<header class="topbar">
+<a aria-label="일일펑 홈" class="brand" href="#today"><span class="brand-mark"><svg fill="none" height="32" viewbox="0 0 40 40" width="32"><path d="M7 28c5 3 20 3 25-5M8 12l6 8 7-14 1 14 10-7-6 11" stroke="#4d4b45" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1"></path><path d="M8 34l4-2m14-26 1 3" stroke="#d17c63" stroke-linecap="round" stroke-width="2"></path></svg></span><span>일일펑<span class="brand-period">.</span></span></a>
+<nav aria-label="주요 메뉴" class="main-nav">
+<button class="nav-tab is-active" data-page="today" type="button"><span>⚡</span> 오늘</button>
+<button class="nav-tab" data-page="records" type="button"><span>▥</span> 기록</button>
+<button class="nav-tab" data-page="settings" type="button"><span>⚙</span> 설정</button>
+</nav>
+<button aria-label="효과음 켜기 또는 끄기" class="sound-toggle" id="soundToggle" title="효과음" type="button">♪ ON</button>
+</header>
+<main>
+<section aria-labelledby="todayHeading" class="page" id="todayPage"><div class="diary-topline"><span class="tape-label">11월의 작은 기록</span><span id="todayDate">오늘</span></div><div class="today-layout diary-spread"><aside class="diary-left"><div class="artframe"><svg aria-hidden="true" class="doodle-art" viewbox="0 0 295 205" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#4d4b45" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1">
+<path d="M69 145c-9-24 2-54 29-71 21-14 54-11 75 10 21 21 23 48 13 67-18 34-90 37-117-6Z"></path>
+<path d="M97 107c3-6 6-6 9 0M148 107c3-6 6-6 9 0M110 127c11 13 24 13 36 0"></path>
+<path d="M123 71c1-18 11-26 24-28 8-3 8-9 3-14"></path>
+<path d="M148 26l-5-13m13 14 10-11m-5 19 13 4M187 72l17-8m-9 29 17 1M66 99l-17-7M65 129l-19 6"></path>
+<path d="M231 119l-21 41-16-11 23-39 14 9ZM194 149l-5 20 21-9M217 110l5-9 14 9-5 9"></path>
+<path d="M40 158c7-6 13-6 19 0M81 181c10-4 18-3 25 3M163 185c10 3 18 0 26-7"></path>
+<path d="M27 43l5 12 12 4-12 4-5 12-5-12-12-4 12-4ZM223 26l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" stroke="#d17c63"></path>
+</g><path d="M68 152c20 24 86 31 116-5" fill="none" stroke="#d17c63" stroke-dasharray="4 9" stroke-linecap="round" stroke-width="2"></path></svg><span class="art-sign">daily doodle :)</span></div><div class="heading-copy"><div class="kicker">TODAY’S LITTLE WINS</div><h1 id="todayHeading">오늘도 하나씩,<br/><em>펑!</em></h1><p>오늘의 작은 완료를 응원해요.</p></div><div aria-live="polite" class="progress-panel"><div class="progress-top"><span>오늘의 진행</span><strong><span id="doneCount">0</span><span class="progress-slash"> / </span><span id="totalCount">0</span></strong></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div class="progress-bottom"><span id="progressHint">첫 카드를 터뜨려 볼까요?</span><span id="progressPct">0%</span></div></div><div class="diary-letter"><span aria-hidden="true" class="diary-heart">♡</span><b>실패한 날도 괜찮아.</b><p>그날의 기록으로 남겨 두고,<br/>오늘 다시 한 장씩 시작해요.</p></div><button class="aside-link" id="gotoRecords" type="button">나의 기록 펼쳐보기 <span>↗</span></button></aside><div class="diary-right"><div aria-hidden="true" class="paper-hole-row"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="section-title-row"><div><div class="eyebrow small">TO DO TODAY</div><h2>오늘의 카드 <span class="count-badge" id="remainingBadge">0</span></h2></div><button class="text-button" id="quickAdd" type="button">＋ 새 카드</button></div><div aria-live="polite" class="mission-list" id="missionList"></div><p class="subtle-tip">오늘 끝낸 카드는 <strong>펑!</strong> 터지고, 남겨진 기록은 차곡차곡 모여요.</p><div class="sketch-footer">✎   done is better than perfect. <span>✳</span></div></div></div></section>
+<section aria-labelledby="recordsHeading" class="page" hidden="" id="recordsPage">
+<div class="eyebrow"><span class="eyebrow-dot"></span> MY RECORD</div>
+<div class="page-heading"><div><h1 id="recordsHeading">나의 <em>폭파 기록</em></h1><p>성공도, 실패도. 변화는 숫자로 남아요.</p></div><span aria-hidden="true" class="heading-symbol">▥</span></div>
+<div class="filter-panel">
+<label>조회 기간 <select id="rangeSelect"><option value="7">최근 7일</option><option value="30">최근 30일</option><option value="90">최근 90일</option><option value="all">전체</option><option value="custom">직접 지정</option></select></label>
+<label>집계 구간 <select id="bucketSelect"><option value="day">일별</option><option value="week">주별</option><option value="month">월별</option></select></label>
+<label>할 일 항목 <select id="taskSelect"><option value="all">전체 항목</option></select></label>
+<div class="custom-dates" hidden="" id="customDates"><label>시작일 <input id="startDate" type="date"/></label><label>종료일 <input id="endDate" type="date"/></label></div>
+</div>
+<div class="stat-grid"><div class="stat-box"><span>달성률</span><strong id="rateStat">—</strong><small>완료 / (완료 + 미완료)</small></div><div class="stat-box"><span>폭파 성공</span><strong id="successStat">0<span>건</span></strong><small>완료된 미션</small></div><div class="stat-box"><span>미완료 기록</span><strong id="failureStat">0<span>건</span></strong><small>지나간 날만 집계</small></div></div>
+<div class="chart-panel"><div class="chart-header"><div><h2>기간별 성공 · 미완료</h2><p>막대를 누르면 구간별 숫자를 볼 수 있어요.</p></div><div class="legend"><span><i class="legend-dot done"></i>성공</span><span><i class="legend-dot missed"></i>미완료</span></div></div><div aria-label="기간별 할 일 실천 그래프" class="chart" id="chart" role="group"></div><p aria-live="polite" class="chart-detail" id="chartDetail"></p></div>
+<div class="trend-panel"><div class="trend-icon">↘</div><div><h2>실패 기록도 성장의 일부예요.</h2><p id="trendText">기록이 쌓이면 기간의 앞부분과 뒷부분을 비교해 보여드려요.</p></div></div>
+<p class="records-footnote">※ 오늘 아직 완료하지 않은 카드는 ‘진행 중’이며 실패로 집계하지 않아요. 지난 날짜의 미완료만 기록에 포함해요.</p>
+</section>
+<section aria-labelledby="settingsHeading" class="page" hidden="" id="settingsPage">
+<div class="eyebrow"><span class="eyebrow-dot"></span> MY ROUTINE</div>
+<div class="page-heading"><div><h1 id="settingsHeading">나만의 <em>미션 설정</em></h1><p>반복하는 할 일을 미리 정해두면 매일 카드가 생겨요.</p></div><span aria-hidden="true" class="heading-symbol">⚙</span></div>
+<div class="settings-layout"><div><div class="settings-heading"><h2>등록된 할 일</h2><button class="primary-button" id="settingsAdd" type="button">＋ 할 일 추가</button></div><div class="settings-list" id="settingList"></div><div class="archive-section" id="archiveSection"></div></div><aside class="settings-aside"><h3>일일펑 사용법</h3><p><strong>① 설정</strong> 매일 또는 특정 요일에 할 미션을 등록해요.</p><p><strong>② 폭파</strong> 오늘 완료한 카드를 누르면 펑! 하고 터져요.</p><p><strong>③ 기록</strong> 지나간 날의 미완료는 그래프로 이동해요.</p><div class="aside-divider"></div><h3>기록 관리</h3><p>기록은 현재 기기의 브라우저에 저장돼요. 기기를 바꾸기 전 백업해 주세요.</p><button class="outline-button" id="exportBtn" type="button">↓ 백업 파일 내보내기</button><button class="outline-button" id="importBtn" type="button">↑ 백업 파일 가져오기</button><input accept="application/json,.json" hidden="" id="importFile" type="file"/></aside></div>
+</section>
+</main>
+<footer class="footer"><span>일일펑💥</span><span>하나씩 펑, 조금씩 성장.</span></footer>
+</div>
+<dialog aria-labelledby="dialogTitle" class="task-dialog" id="taskDialog"><form id="taskForm" method="dialog"><div class="dialog-top"><div><div class="eyebrow small">NEW MISSION</div><h2 id="dialogTitle">새 카드 만들기</h2></div><button aria-label="닫기" class="icon-button" id="dialogClose" type="button">✕</button></div><label class="form-field">할 일 이름 <input autocomplete="off" id="taskTitle" maxlength="45" placeholder="예: 블로그 작업하기" required="" type="text"/></label><label class="form-field">기준 시간 <span class="label-note">선택 사항 · 표시용</span><input id="taskTime" type="time"/></label><fieldset class="weekday-field"><legend>반복 요일</legend><div class="weekday-chips" id="weekdayChips"><label><input checked="" type="checkbox" value="1"/><span>월</span></label><label><input checked="" type="checkbox" value="2"/><span>화</span></label><label><input checked="" type="checkbox" value="3"/><span>수</span></label><label><input checked="" type="checkbox" value="4"/><span>목</span></label><label><input checked="" type="checkbox" value="5"/><span>금</span></label><label><input checked="" type="checkbox" value="6"/><span>토</span></label><label><input checked="" type="checkbox" value="0"/><span>일</span></label></div></fieldset><p class="form-info">변경한 반복 요일은 오늘부터 적용되고, 지난 기록은 보존돼요.</p><div class="dialog-actions"><button class="outline-button" id="dialogCancel" type="button">취소</button><button class="primary-button" type="submit">카드 저장</button></div></form></dialog>
+<div aria-hidden="true" class="fx-layer" id="fxLayer"></div>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<script defer="" src="./app.js"></script>
+</body>
+</html>

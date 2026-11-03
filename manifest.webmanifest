@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "일일펑💥 — 매일의 미션 폭파",
+  "short_name": "일일펑💥",
+  "description": "매일 할 일을 통쾌하게 폭파하고, 기간별·항목별 성공과 미완료를 확인하는 개인 루틴 앱",
+  "lang": "ko",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffdf6",
+  "theme_color": "#faf8f1",
+  "icons": [
+    {"src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

@@ -1,0 +1,77 @@
+/* 01 — HAND-DRAWN DIARY : layout + controls built independently of v1 theme */
+:root{--bg:#eeeae1;--ink:#45453f;--muted:#817e76;--coral:#c77c68;--coral-dark:#ad6253;--line:#d7d1c5;--cream:#faf8f1;--pale:#fffdf7;font-family:'Noto Sans CJK KR','Noto Sans CJK KR',sans-serif;color:#45453f;background:#eeeae1}
+body{background:radial-gradient(#d7d4cd 0.7px,transparent .7px) 0 0/19px 19px,#eeeae1}
+.app-shell{max-width:1210px;margin:24px auto 50px;background:#fffdf6;min-height:800px;border:1px solid #d2c9b9;box-shadow:1px 3px 0 #e3ded4;padding:0 51px;position:relative}
+.app-shell:before{content:'';position:absolute;top:22px;bottom:20px;left:22px;border-left:2px dashed #ddd5c9;pointer-events:none}
+.review-switcher{min-height:38px;display:flex;align-items:center;justify-content:center;gap:20px;background:#ebe7de;border-bottom:1px solid #d7d0c5;font-size:11px;color:#79766e;padding:6px 10px;position:relative;z-index:6}
+.review-switcher a{color:#888078;text-decoration:none;padding:4px 7px;white-space:nowrap}.review-switcher a.active{color:#514941;font-weight:900;text-decoration:underline;text-decoration-color:#c77c68;text-decoration-thickness:2px;text-underline-offset:5px}.review-switcher span{font-weight:800}
+.topbar{min-height:91px;border-bottom:1.5px dashed #d2cec4;gap:15px}
+.brand{font-family:'Noto Sans CJK KR','Noto Sans CJK KR',sans-serif;font-size:37px;letter-spacing:-1.5px;font-weight:normal;transform:rotate(-2deg);margin-left:8px}.brand-mark{background:none;border:0;box-shadow:none;transform:none;width:41px;margin-right:2px}.brand-period{color:var(--coral)}
+.main-nav{background:none;border:0;border-radius:0;gap:26px;padding:0}.nav-tab{border-radius:0;background:transparent!important;box-shadow:none!important;color:#848178;min-width:0;padding:12px 8px;font-size:14px;position:relative;transform:none!important}.nav-tab span{display:none}.nav-tab.is-active{color:#3f3f39}.nav-tab.is-active:after{content:'';height:7px;bottom:3px;left:8px;right:8px;background:var(--coral);position:absolute;transform:rotate(-2deg);opacity:.44;z-index:-1;border-radius:40% 60% 40% 20%}
+.sound-toggle{border:1.5px dashed #c1bcb2;border-radius:0;background:transparent;padding:10px 13px;font-size:12px}
+.page{padding-top:25px}.diary-topline{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:#736f66;padding:0 2px 25px}.tape-label{background:#dcded3;transform:rotate(-2deg);font-family:'Noto Sans CJK KR',sans-serif;font-size:22px;padding:4px 15px;box-shadow:2px 1px 0 #ded9cc}
+.today-layout.diary-spread{grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);gap:42px;align-items:start}
+.diary-left{padding:0 6px 18px 1px}.artframe{height:200px;position:relative;display:flex;justify-content:center;align-items:center}.doodle-art{width:280px;height:195px;transform:rotate(-3deg)}.art-sign{font:20px 'Noto Sans CJK KR',sans-serif;color:#9c9689;position:absolute;bottom:-1px;right:12px;transform:rotate(6deg)}
+.heading-copy .kicker{font:17px 'Noto Sans CJK KR',sans-serif;color:#a17c6d;letter-spacing:1px}.diary-left h1{font:normal clamp(52px,5.1vw,75px)/1.13 'Noto Sans CJK KR','Noto Sans CJK KR',sans-serif;letter-spacing:-1.8px;color:#43413e;margin:7px 0 7px;transform:rotate(-1deg)}.diary-left h1 em{font-style:normal;color:#bb7460;position:relative}.diary-left h1 em:after{content:'';position:absolute;left:-3px;right:-4px;bottom:7px;border-bottom:6px solid #d6aaa0;opacity:.45;transform:rotate(3deg)}.diary-left .heading-copy p{font-size:14px;line-height:1.5;color:#757069;margin:0 0 19px}
+.diary-left .progress-panel{background:transparent;border:0;border-top:2px solid #6c6962;border-bottom:2px solid #6c6962;color:var(--ink);border-radius:0;padding:15px 0 12px;margin:15px 0 29px}.diary-left .progress-panel:after{display:none}.diary-left .progress-top span{font-size:13px}.diary-left .progress-top strong{font:normal 35px 'Noto Sans CJK KR',sans-serif;color:#bc745f}.diary-left .progress-slash{color:#aaa39a}.diary-left .progress-track{height:8px;border:1.5px solid #aaa69c;border-radius:0;background:repeating-linear-gradient(90deg,#faf9f2 0 21px,#dfdcd3 22px);margin:13px 0 11px}.diary-left .progress-fill{border-radius:0;background:#bd7b68}.diary-left .progress-bottom{color:#918b83;font-size:11px}.diary-left .progress-bottom span:last-child{color:#9c766a}
+.diary-letter{padding:11px 13px 14px 21px;background:#f9f6ed;border-left:3px solid #c9c6bd;transform:rotate(-1deg);position:relative;margin-bottom:22px}.diary-letter:before{content:'✧';position:absolute;right:12px;top:-9px;font-size:25px;color:#bc745f}.diary-letter b{display:block;font-size:14px}.diary-letter p{font-size:12px;line-height:1.8;margin:7px 0 0;color:#79766e}.diary-heart{font:25px 'Noto Sans CJK KR',sans-serif;position:absolute;top:-10px;left:-11px;color:#b77464}
+.diary-left .aside-link{width:auto;padding:7px 0;border-top:0;border-bottom:1px dashed #7a766d;font:normal 20px 'Noto Sans CJK KR',sans-serif;gap:33px;color:#554f48}
+.diary-right{border-left:1.5px solid #d6d2c9;position:relative;padding:28px 0 25px 38px;min-height:660px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 40px,rgba(133,133,124,.07) 41px,transparent 42px)}
+.paper-hole-row{position:absolute;top:0;left:34px;right:0;display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid #d0cac0;padding-bottom:12px}.paper-hole-row i{height:9px;width:9px;border-radius:50%;border:1px solid #b0aaa0;background:#ebe9de;box-shadow:inset 2px 2px 2px #d5d0c4}
+.diary-right .section-title-row{margin:0 0 16px;align-items:center}.diary-right .eyebrow{font:normal 15px 'Noto Sans CJK KR',sans-serif;letter-spacing:1.2px;color:#9f897d}.diary-right .section-title-row h2{font:normal 37px 'Noto Sans CJK KR',sans-serif;letter-spacing:-.6px;color:#4a4842}.count-badge{border:1.5px solid #c77c68;background:transparent;border-radius:50% 44% 50% 47%;padding:2px 10px;color:#bb7460;font:normal 22px 'Noto Sans CJK KR',sans-serif}.diary-right .text-button{font:normal 23px 'Noto Sans CJK KR',sans-serif;text-decoration:none;border-bottom:1px dashed #aa8474;padding:4px 0;color:#9e766b}
+.mission-list{gap:14px}.mission-card{background:#fffefa;border:1.6px solid #7e7c74;box-shadow:2px 3px 0 #dedbd2;border-radius:4px 8px 5px 10px;min-height:94px;padding:13px 17px 13px 15px;transform:rotate(-.3deg);gap:16px}.mission-card:nth-child(even){transform:rotate(.4deg);border-radius:8px 4px 9px 4px}.mission-card:hover:not(.is-blasting){transform:translateY(-2px) rotate(-.3deg)}.card-index{background:none;border:1.5px solid #a4a199;color:#9b9486;border-radius:46% 54% 49% 52%;height:36px;width:36px;font:normal 23px 'Noto Sans CJK KR',sans-serif}.card-copy strong{font-size:16px;font-weight:800;letter-spacing:-.4px;margin-bottom:6px}.card-copy span{font-size:12px;color:#888276}.boom-button{display:grid;place-items:center;background:#e7b5a4;border:1.7px solid #5c5952;color:#4e4943;box-shadow:2px 2px 0 #a99b8f;width:64px;height:64px;min-width:64px;padding:0;border-radius:48% 52% 44% 56%;font:normal 0px 'Noto Sans CJK KR',sans-serif;transform:rotate(8deg)}.boom-button:before{content:'펑!';font:normal 27px 'Noto Sans CJK KR',sans-serif;color:#46433c;transform:rotate(-9deg)}.boom-button:after{content:'✳';position:absolute;top:-11px;right:-9px;font-size:17px;color:#b47760}.boom-button:hover{background:#e3a896;transform:scale(1.07) rotate(-8deg)}.boom-button:active{box-shadow:none;transform:scale(.93)}
+.subtle-tip{font-size:11px;margin:26px 0 0;color:#948f85}.subtle-tip strong{color:#bc745f}.sketch-footer{padding:38px 0 0;font:normal 23px 'Noto Sans CJK KR',sans-serif;color:#a29b8e;display:flex;justify-content:space-between;align-items:center}.sketch-footer span{font-size:25px;color:#d0a195}
+.footer{margin-top:20px;border-top:1px dashed #d6d1c7;color:#9f9a90}.footer span:first-child{color:#6b675d}
+/* Records and settings are toned like notebook pages, not re-colored arcade widgets */
+#recordsPage>.eyebrow,#settingsPage>.eyebrow{font:normal 18px 'Noto Sans CJK KR',sans-serif;color:#bd816f}#recordsPage .page-heading h1,#settingsPage .page-heading h1{font:normal 54px 'Noto Sans CJK KR',sans-serif;letter-spacing:-1px}.heading-symbol{font:50px 'Noto Sans CJK KR',sans-serif;color:#c77c68}.page-heading{margin-bottom:20px}.filter-panel{border:1px dashed #aea99e;border-radius:0;background:#faf8f1;padding:16px 20px}.filter-panel label{font-size:12px}.filter-panel select,.filter-panel input{border-radius:0;border-color:#c8c2b8;background:#fffefa}.stat-grid{gap:0;border-top:1.5px solid #756f66;border-bottom:1.5px solid #756f66}.stat-box{border:0;border-right:1px dashed #c4beb3;border-radius:0;background:transparent;padding:20px 18px}.stat-box:last-child{border-right:0}.stat-box strong{font-family:'Noto Sans CJK KR',sans-serif;font-weight:normal;font-size:55px}.chart-panel{background:repeating-linear-gradient(0deg,#fffdf6 0 36px,#e8e4dd 37px,#fffdf6 38px);border:1px solid #beb9ad;border-radius:0;box-shadow:3px 3px 0 #ebe7dc}.chart-panel h2{font:normal 31px 'Noto Sans CJK KR',sans-serif}.bar-done{background:#c57e68}.bar-miss{background:#b8b3ac}.trend-panel{background:#f7f3e9;border:1px dashed #b8afa2;border-radius:0}.settings-aside,.setting-item,.setting-empty{border-radius:0;background:#faf8f1}.primary-button{border:1px solid #6c635b;border-radius:3px;background:#c57e68;box-shadow:2px 2px 0 #aaa093;color:white}.outline-button{border-radius:2px}.task-dialog{border-radius:7px;box-shadow:4px 4px 0 #8c8076}.toast{border-radius:3px;box-shadow:2px 2px 0 #a98577}
+@media(max-width:1050px){.app-shell{margin:12px 20px;padding:0 36px}.today-layout.diary-spread{gap:25px}.diary-right{padding-left:24px}.diary-left h1{font-size:60px}}
+@media(max-width:760px){.review-switcher{gap:8px;font-size:10px;flex-wrap:wrap}.review-switcher span{display:none}.app-shell{margin:0;padding:0 22px;min-height:100vh;box-shadow:none;border:0}.app-shell:before{left:7px}.topbar{padding:10px 0 5px;gap:0}.brand{font-size:32px}.brand-mark{width:31px}.main-nav{order:3;width:100%;justify-content:center;border-bottom:1px dashed #ddd6c8;gap:25px}.nav-tab{flex:none;min-width:75px}.sound-toggle{font-size:11px;padding:7px}.page{padding-top:18px}.diary-topline{padding-bottom:4px;font-size:12px}.tape-label{font-size:18px}.today-layout.diary-spread{grid-template-columns:1fr;gap:18px}.diary-left{display:grid;grid-template-columns:112px 1fr;gap:0 18px;align-items:center}.artframe{height:145px;grid-column:1;grid-row:1}.doodle-art{width:136px;height:136px}.art-sign{font-size:15px;right:-8px;bottom:0}.heading-copy{grid-column:2;grid-row:1}.diary-left h1{font-size:50px;margin:3px 0}.diary-left .heading-copy p{font-size:12px;margin:4px 0}.diary-left .heading-copy .kicker{font-size:12px}.diary-left .progress-panel{grid-column:1/-1;margin:12px 0 12px;padding:9px 0}.diary-letter{display:none}.diary-left .aside-link{display:none}.diary-right{padding:25px 2px 20px;border-left:0;border-top:1.5px dashed #d6d0c5;min-height:auto}.paper-hole-row{top:10px;left:0}.diary-right .section-title-row h2{font-size:34px}.diary-right .text-button{font-size:21px}.mission-card{min-height:78px;padding:11px 10px;gap:10px}.card-index{width:31px;height:31px;font-size:20px}.card-copy strong{font-size:15px}.boom-button{min-width:54px;width:54px;height:54px}.boom-button:before{font-size:25px}.footer{font-size:10px}.chart-panel{padding:17px}.stat-box{padding:15px 8px}.stat-box strong{font-size:42px}}
+@media(max-width:385px){.diary-left{grid-template-columns:105px 1fr;gap:9px}.diary-left h1{font-size:44px}.doodle-art{width:115px}.app-shell{padding:0 17px}.card-copy strong{font-size:14px}.card-copy span{font-size:10px}}
+
+/* 일일펑 최종 선택안: 손그림 구조 × 미니멀 고딕 타이포그래피.
+   라인 드로잉, 노트 구분선, 카드와 폭파 버튼의 모양은 그대로 유지합니다. */
+:root{--typeface:"Noto Sans CJK KR","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-family:var(--typeface);font-synthesis:none}
+body,button,input,select,textarea,dialog{font-family:var(--typeface)}
+.brand{font:800 27px/1.15 var(--typeface);letter-spacing:-1.7px;transform:none}
+.nav-tab{font:600 14px/1.4 var(--typeface);letter-spacing:-.3px}
+.sound-toggle{font:600 12px/1.2 var(--typeface)}
+.tape-label{font:600 13px/1.4 var(--typeface);letter-spacing:-.2px;padding:8px 15px}
+.art-sign{font:500 11px/1.4 var(--typeface);letter-spacing:.2px}
+.heading-copy .kicker{font:600 11px/1.4 var(--typeface);letter-spacing:.9px}
+.diary-left h1{font:800 clamp(38px,3.8vw,54px)/1.27 var(--typeface);letter-spacing:-2.5px;transform:none;margin:10px 0 10px}
+.diary-left h1 em{font-weight:850}
+.diary-left .progress-top strong{font:750 31px/1.15 var(--typeface);letter-spacing:-1.3px}
+.diary-left .aside-link{font:650 13px/1.5 var(--typeface);letter-spacing:-.2px;padding:8px 0}
+.diary-heart{font:650 23px/1.2 var(--typeface)}
+.diary-right .eyebrow{font:650 11px/1.5 var(--typeface);letter-spacing:1.2px}
+.diary-right .section-title-row h2{font:750 29px/1.3 var(--typeface);letter-spacing:-1.2px;margin-top:7px}
+.count-badge{font:700 15px/1.3 var(--typeface);padding:4px 10px;vertical-align:middle;letter-spacing:-.5px}
+.diary-right .text-button{font:700 13px/1.5 var(--typeface);letter-spacing:-.4px;white-space:nowrap}
+.card-index{font:600 12px/1 var(--typeface);letter-spacing:-.2px}
+.card-copy strong{font-weight:700;letter-spacing:-.5px}
+.boom-button:before{font:800 16px/1 var(--typeface);letter-spacing:-.6px}
+.sketch-footer{font:500 12px/1.6 var(--typeface);letter-spacing:-.2px}
+.sketch-footer span{font:650 20px/1.2 var(--typeface)}
+#recordsPage>.eyebrow,#settingsPage>.eyebrow{font:650 11px/1.5 var(--typeface);letter-spacing:1.2px}
+#recordsPage .page-heading h1,#settingsPage .page-heading h1{font:800 clamp(32px,3.2vw,42px)/1.25 var(--typeface);letter-spacing:-1.7px}
+.heading-symbol{font:600 32px/1.2 var(--typeface)}
+.stat-box strong{font:760 43px/1.15 var(--typeface);letter-spacing:-2px}
+.chart-panel h2{font:750 21px/1.4 var(--typeface);letter-spacing:-.6px}
+/* Keep existing functional widgets readable with the same font. */
+.task-dialog h2{letter-spacing:-.8px}
+@media(max-width:1050px){.diary-left h1{font-size:clamp(37px,4.1vw,49px)}}
+@media(max-width:760px){
+  .brand{font-size:24px;letter-spacing:-1px}
+  .nav-tab{font-size:13px}
+  .tape-label{font-size:11px;padding:6px 10px}
+  .art-sign{font-size:10px}
+  .heading-copy .kicker{font-size:10px}
+  .diary-left h1{font-size:clamp(22px,6.5vw,34px);line-height:1.3;letter-spacing:-1.1px}
+  .diary-left h1 em{font-size:1.25em}
+  .diary-right .section-title-row h2{font-size:24px;letter-spacing:-.9px}
+  .diary-right .text-button{font-size:12px}
+  .card-index{font-size:12px}
+  .boom-button:before{font-size:15px}
+  .stat-box strong{font-size:35px}
+}
+@media(max-width:385px){.diary-left h1{font-size:22px;letter-spacing:-.5px}.brand{font-size:23px}.diary-right .section-title-row h2{font-size:22px}}
