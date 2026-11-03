@@ -75,3 +75,14 @@ body,button,input,select,textarea,dialog{font-family:var(--typeface)}
   .stat-box strong{font-size:35px}
 }
 @media(max-width:385px){.diary-left h1{font-size:22px;letter-spacing:-.5px}.brand{font-size:23px}.diary-right .section-title-row h2{font-size:22px}}
+
+/* 불발 버튼: 손그림 다이어리 레이아웃과 기존 펑 버튼은 유지합니다. */
+.card-actions{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.miss-button{display:grid;place-items:center;min-height:44px;min-width:44px;padding:0 7px;background:#f8f6ef;border:1px dashed #aaa399;border-radius:4px;color:#77736c;font:650 12px/1.2 var(--typeface);white-space:nowrap;touch-action:manipulation;transition:background .15s,color .15s}
+.miss-button:hover{background:#ede9df;color:#48453f}
+.miss-button:active{background:#ddd6ca}
+.finished-box{background:#f8f6ef;border:1px dashed #b6b0a4;box-shadow:none}
+.finished-box .big-complete{font-size:39px;color:#8b847b}
+.finished-box h3{font-size:20px;color:#59554d}
+@media(max-width:760px){.card-actions{gap:5px}.miss-button{min-width:40px;min-height:44px;padding:0 5px;font-size:11px}.mission-card{gap:8px;padding-right:9px;padding-left:9px}.card-index{width:28px;height:28px}.card-copy strong{font-size:14px}}
+@media(max-width:385px){.card-actions{gap:4px}.miss-button{min-width:38px;padding:0 4px;font-size:11px}.boom-button{min-width:49px;width:49px;height:49px}.mission-card{gap:6px}}
