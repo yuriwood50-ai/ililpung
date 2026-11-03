@@ -26,7 +26,7 @@ jobs:
       - name: 정적 웹앱 파일 준비
         run: |
           mkdir -p dist/assets
-          cp index.html styles.css diary-final.css app.js sw.js manifest.webmanifest dist/
+          cp index.html styles.css diary-final.css fx.css fx.js app.js sw.js manifest.webmanifest dist/
           cp assets/icon-192.png assets/icon-512.png dist/assets/
           touch dist/.nojekyll
       - name: GitHub Pages 설정
