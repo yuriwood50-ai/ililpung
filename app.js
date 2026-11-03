@@ -124,7 +124,7 @@
     state.failures[id]??={};state.failures[id][day]=stamp;
     save();renderToday();
     showToast('불발! 오늘의 실패 기록으로 보냈어요.',{label:'되돌리기',fn:()=>{
-      if(state.failures[id]?.[day]===stamp){delete state.failures[id][day];save();renderToday();}
+      if(state.failures[id]?.[day]===stamp){delete state.failures[id][day];save();if(currentPage==='records')renderRecords();else renderToday();}
     }});
   }
   function openDialog(id=null) {
