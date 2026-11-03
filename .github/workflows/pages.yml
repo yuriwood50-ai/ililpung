@@ -1,0 +1,40 @@
+name: 일일펑 · GitHub Pages 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 소스 불러오기
+        uses: actions/checkout@v4
+      - name: 정적 웹앱 파일 준비
+        run: |
+          mkdir -p dist/assets
+          cp index.html styles.css diary-final.css app.js sw.js manifest.webmanifest dist/
+          cp assets/icon-192.png assets/icon-512.png dist/assets/
+          touch dist/.nojekyll
+      - name: GitHub Pages 설정
+        uses: actions/configure-pages@v5
+      - name: 배포 파일 업로드
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist
+      - name: 웹앱 공개
+        id: deployment
+        uses: actions/deploy-pages@v4
